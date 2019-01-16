@@ -1,0 +1,44 @@
+version: "3"
+services:
+  back-server:
+    image: node:11.6.0-alpine
+    volumes:
+      - ../:/app
+    ports:
+      - 8099:8099
+    entrypoint:
+      - "tail"
+      - "-f"
+      - "/dev/null"
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: +_pouetpouet_+
+    volumes:
+      - mysql:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - 8097:8080
+
+  prisma:
+    image: prismagraphql/prisma:1.21.0
+    ports:
+      - 8098:4466
+    environment:
+      PRISMA_CONFIG: |
+        managementApiSecret: +_pouetpouetcacahouete_+
+        port: 4466
+        databases:
+          default:
+            connector: mysql
+            migrations: true
+            host: mysql
+            port: 3306
+            user: root
+            password: +_pouetpouet_+
+
+volumes:
+  mysql:
